@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Calculadora de Áreas - Cuadrado</title>
+  <title>Calculadora de Áreas</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -11,26 +11,60 @@
   <div class="bg-white shadow-2xl rounded-3xl p-8 max-w-md w-full space-y-6 border border-blue-200">
     <h1 class="text-3xl font-bold text-center text-blue-700">Calculadora de Áreas</h1>
 
-    <!-- Botón para mostrar cálculo del cuadrado -->
-    <button onclick="mostrar('cuadrado')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl transition-all">
-      Calcular área de un Cuadrado
-    </button>
+    <!-- Botones -->
+    <div class="grid gap-3">
+      <button onclick="mostrar('cuadrado')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl transition-all">
+        Área de Cuadrado
+      </button>
+      <button onclick="mostrar('triangulo')" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-4 rounded-xl transition-all">
+        Área de Triángulo
+      </button>
+      <button onclick="mostrar('rectangulo')" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-4 rounded-xl transition-all">
+        Área de Rectángulo
+      </button>
+    </div>
 
-    <!-- Sección cuadrado (oculta al inicio) -->
+    <!-- Sección Cuadrado -->
     <div id="cuadrado" class="space-y-4 pt-4 hidden border-t border-gray-300">
-      <label for="lado" class="block text-sm font-medium text-gray-700">Ingrese el lado del cuadrado:</label>
-      <input type="number" id="lado" placeholder="Ej: 5" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
-
-      <button onclick="calcularCuadrado()" class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition">
+      <label for="lado" class="block text-sm font-medium text-gray-700">Lado del cuadrado:</label>
+      <input type="number" id="lado" placeholder="Ej: 5" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+      <button onclick="calcularCuadrado()" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition">
         Calcular Área
       </button>
-
       <p id="resultadoCuadrado" class="text-center text-lg font-bold text-green-700"></p>
+    </div>
+
+    <!-- Sección Triángulo -->
+    <div id="triangulo" class="space-y-4 pt-4 hidden border-t border-gray-300">
+      <label class="block text-sm font-medium text-gray-700">Base del triángulo:</label>
+      <input type="number" id="base" placeholder="Ej: 6" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+      <label class="block text-sm font-medium text-gray-700">Altura del triángulo:</label>
+      <input type="number" id="altura" placeholder="Ej: 4" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+      <button onclick="calcularTriangulo()" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition">
+        Calcular Área
+      </button>
+      <p id="resultadoTriangulo" class="text-center text-lg font-bold text-green-700"></p>
+    </div>
+
+    <!-- Sección Rectángulo -->
+    <div id="rectangulo" class="space-y-4 pt-4 hidden border-t border-gray-300">
+      <label class="block text-sm font-medium text-gray-700">Base del rectángulo:</label>
+      <input type="number" id="baseRect" placeholder="Ej: 8" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+      <label class="block text-sm font-medium text-gray-700">Altura del rectángulo:</label>
+      <input type="number" id="alturaRect" placeholder="Ej: 3" class="w-full border border-gray-300 rounded-lg px-4 py-2">
+      <button onclick="calcularRectangulo()" class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition">
+        Calcular Área
+      </button>
+      <p id="resultadoRectangulo" class="text-center text-lg font-bold text-green-700"></p>
     </div>
   </div>
 
   <script>
     function mostrar(seccion) {
+      const secciones = ['cuadrado', 'triangulo', 'rectangulo'];
+      secciones.forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
       document.getElementById(seccion).classList.remove('hidden');
     }
 
@@ -38,13 +72,37 @@
       const lado = parseFloat(document.getElementById("lado").value);
       const resultado = document.getElementById("resultadoCuadrado");
       if (isNaN(lado) || lado <= 0) {
-        resultado.innerText = "Por favor ingrese un número válido.";
+        resultado.innerText = "Ingrese un valor válido.";
         resultado.classList.add('text-red-600');
         return;
       }
+      resultado.innerText = `Área del cuadrado: ${lado * lado} unidades²`;
+      resultado.classList.remove('text-red-600');
+    }
 
-      const area = lado * lado;
-      resultado.innerText = `Área del cuadrado: ${area} unidades²`;
+    function calcularTriangulo() {
+      const base = parseFloat(document.getElementById("base").value);
+      const altura = parseFloat(document.getElementById("altura").value);
+      const resultado = document.getElementById("resultadoTriangulo");
+      if (isNaN(base) || isNaN(altura) || base <= 0 || altura <= 0) {
+        resultado.innerText = "Ingrese valores válidos.";
+        resultado.classList.add('text-red-600');
+        return;
+      }
+      resultado.innerText = `Área del triángulo: ${(base * altura) / 2} unidades²`;
+      resultado.classList.remove('text-red-600');
+    }
+
+    function calcularRectangulo() {
+      const base = parseFloat(document.getElementById("baseRect").value);
+      const altura = parseFloat(document.getElementById("alturaRect").value);
+      const resultado = document.getElementById("resultadoRectangulo");
+      if (isNaN(base) || isNaN(altura) || base <= 0 || altura <= 0) {
+        resultado.innerText = "Ingrese valores válidos.";
+        resultado.classList.add('text-red-600');
+        return;
+      }
+      resultado.innerText = `Área del rectángulo: ${base * altura} unidades²`;
       resultado.classList.remove('text-red-600');
     }
   </script>
